@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>notes | 睡不醒的黑客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="杂记  杂记 white-space表现形式 terset配置 MutationObserver注意点 容器出现滚动条时，子容器的宽度是否因为滚动条而改变 webpack 多线程和cache优化 其他记录-以后分类     white-space表现形式   white-space👇 空格() 非断空格(&amp;nbsp;) 换行符(\n)     normal 保留1个空格，或者在多空格的时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="notes">
+<meta property="og:url" content="https://hq229075284.github.io/blog/2021/06/notes/index.html">
+<meta property="og:site_name" content="睡不醒的黑客">
+<meta property="og:description" content="杂记  杂记 white-space表现形式 terset配置 MutationObserver注意点 容器出现滚动条时，子容器的宽度是否因为滚动条而改变 webpack 多线程和cache优化 其他记录-以后分类     white-space表现形式   white-space👇 空格() 非断空格(&amp;nbsp;) 换行符(\n)     normal 保留1个空格，或者在多空格的时">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-28T20:00:50.305Z">
+<meta property="article:modified_time" content="2021-06-28T20:00:50.305Z">
+<meta property="article:author" content="HanQ">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/blog/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/blog/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/blog/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+
+    
+<script src="/blog/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?c5e2de02c4aac83227b728f6dc16f902";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/blog/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">睡不醒的黑客</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/blog/.">首页</a>
+                
+                    <a class="main-nav-link" href="/blog/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/blog/github">GitHub仓库</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/blog/images/IMG_0049.JPG" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/blog/',
+        CONTENT_URL: '/blog/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/blog/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/blog/.">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/blog/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/blog/github">GitHub仓库</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/blog/images/IMG_0049.JPG" />
+            <h2 id="name">HanQ</h2>
+            <h3 id="title">Web Developer &amp; Node Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>HangZhou, China</span>
+            <a id="follow" target="_blank" href="https://github.com/hq229075284">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                23
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                7
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/hq229075284" target="_blank" title="github" >
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main" ><article id="post-notes" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            notes
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/blog/2021/06/notes/">
+            <time datetime="2021-06-28T20:00:50.305Z" itemprop="datePublished">2021-06-28</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h1 id="杂记"><a href="#杂记" class="headerlink" title="杂记"></a>杂记</h1><!-- TOC -->
+<ul>
+<li><a href="#%e6%9d%82%e8%ae%b0">杂记</a><ul>
+<li><a href="#white-space%e8%a1%a8%e7%8e%b0%e5%bd%a2%e5%bc%8f">white-space表现形式</a></li>
+<li><a href="#terset%e9%85%8d%e7%bd%ae">terset配置</a></li>
+<li><a href="#mutationobserver%e6%b3%a8%e6%84%8f%e7%82%b9">MutationObserver注意点</a></li>
+<li><a href="#%e5%ae%b9%e5%99%a8%e5%87%ba%e7%8e%b0%e6%bb%9a%e5%8a%a8%e6%9d%a1%e6%97%b6%e5%ad%90%e5%ae%b9%e5%99%a8%e7%9a%84%e5%ae%bd%e5%ba%a6%e6%98%af%e5%90%a6%e5%9b%a0%e4%b8%ba%e6%bb%9a%e5%8a%a8%e6%9d%a1%e8%80%8c%e6%94%b9%e5%8f%98">容器出现滚动条时，子容器的宽度是否因为滚动条而改变</a></li>
+<li><a href="#webpack-%e5%a4%9a%e7%ba%bf%e7%a8%8b%e5%92%8ccache%e4%bc%98%e5%8c%96">webpack 多线程和cache优化</a></li>
+<li><a href="#%e5%85%b6%e4%bb%96%e8%ae%b0%e5%bd%95-%e4%bb%a5%e5%90%8e%e5%88%86%e7%b1%bb">其他记录-以后分类</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<h2 id="white-space表现形式"><a href="#white-space表现形式" class="headerlink" title="white-space表现形式"></a>white-space表现形式</h2><table>
+<thead>
+<tr>
+<th>white-space👇</th>
+<th>空格(<code></code>)</th>
+<th>非断空格(<code>&amp;nbsp;</code>)</th>
+<th>换行符(<code>\n</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>normal</td>
+<td>保留1个空格，或者在多空格的时候仅保留1个空格</td>
+<td>全部非断空格都保留</td>
+<td>表现为1个空格，不换行</td>
+</tr>
+<tr>
+<td>pre</td>
+<td>保留全部的空格</td>
+<td>全部非断空格都保留</td>
+<td>会换行，但当文本溢出容器时不会自动换行</td>
+</tr>
+<tr>
+<td>pre-line</td>
+<td>保留1个空格，或者在多空格的时候仅保留1个空格</td>
+<td>全部非断空格都保留</td>
+<td>会换行</td>
+</tr>
+<tr>
+<td>pre-wrap</td>
+<td>保留全部的空格</td>
+<td>全部非断空格都保留</td>
+<td>会换行</td>
+</tr>
+<tr>
+<td>no-wrap</td>
+<td>保留1个空格，或者在多空格的时候仅保留1个空格</td>
+<td>全部非断空格都保留</td>
+<td>表现为1个空格，不换行</td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<h2 id="terset配置"><a href="#terset配置" class="headerlink" title="terset配置"></a>terset配置</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> TerserPlugin(&#123;</span><br><span class="line">    <span class="comment">// test: /\.js(\?.*)?$/i,</span></span><br><span class="line">    <span class="comment">// exclude: /node_modules/,</span></span><br><span class="line">    terserOptions: &#123;</span><br><span class="line">        <span class="comment">// ecma: undefined,</span></span><br><span class="line">        warnings: <span class="literal">false</span>,</span><br><span class="line">        parse: &#123;</span><br><span class="line">            ecma: <span class="number">8</span></span><br><span class="line">        &#125;,</span><br><span class="line">        compress: &#123;</span><br><span class="line">            ecma: <span class="number">5</span>,<span class="comment">// 默认值，防止es5代码被替换成es6+的代码</span></span><br><span class="line">            passes: <span class="number">3</span>,</span><br><span class="line">            pure_funcs: [<span class="string">'console.log'</span>, <span class="string">'console.info'</span>],</span><br><span class="line">            toplevel: <span class="literal">true</span></span><br><span class="line">            <span class="comment">// https://github.com/terser/terser/issues/120（已修复）</span></span><br><span class="line">            <span class="comment">// inline: 2</span></span><br><span class="line">        &#125;,</span><br><span class="line">        mangle: <span class="literal">true</span>, <span class="comment">// Note `mangle.properties` is `false` by default.</span></span><br><span class="line">        output: &#123;</span><br><span class="line">            ecma: <span class="number">5</span>, <span class="comment">// 默认值，防止es5代码被替换成es6+的代码</span></span><br><span class="line">            <span class="comment">// Turned on because emoji and regex is not minified properly using default</span></span><br><span class="line">            <span class="comment">// https://github.com/facebook/create-react-app/issues/2488</span></span><br><span class="line">            ascii_only: <span class="literal">true</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="built_in">module</span>: <span class="literal">false</span>,</span><br><span class="line">        toplevel: <span class="literal">false</span>,</span><br><span class="line">        nameCache: <span class="literal">null</span>,</span><br><span class="line">        ie8: <span class="literal">false</span>,</span><br><span class="line">        keep_classnames: <span class="literal">undefined</span>,</span><br><span class="line">        keep_fnames: <span class="literal">false</span>,</span><br><span class="line">        safari10: <span class="literal">false</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// parallel: getCpuCount()</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="MutationObserver注意点"><a href="#MutationObserver注意点" class="headerlink" title="MutationObserver注意点"></a>MutationObserver注意点</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">observer=<span class="keyword">new</span> MutationObserver(<span class="function"><span class="params">mutations</span>=&gt;</span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'1'</span>,mutations)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">observer2=<span class="keyword">new</span> MutationObserver(<span class="function"><span class="params">mutations</span>=&gt;</span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'2'</span>,mutations)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">observer3=<span class="keyword">new</span> MutationObserver(<span class="function"><span class="params">mutations</span>=&gt;</span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'3'</span>,mutations)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> input=<span class="built_in">document</span>.querySelector(<span class="string">'input'</span>)</span><br><span class="line">observer3.observe(input,&#123;<span class="attr">attributes</span>: <span class="literal">true</span>&#125;)</span><br><span class="line">observer2.observe(input,&#123;<span class="attr">attributes</span>: <span class="literal">true</span>&#125;)</span><br><span class="line">observer.observe(input,&#123;<span class="attr">attributes</span>: <span class="literal">true</span>&#125;)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    input.classList.add(<span class="string">'a1'</span>)</span><br><span class="line">&#125;,<span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当监听的元素发生改变时会按new的顺序执行监听回调</span></span><br><span class="line"><span class="comment">// 所以结果为:</span></span><br><span class="line"><span class="comment">//  1 [MutationRecord]</span></span><br><span class="line"><span class="comment">//  2 [MutationRecord]</span></span><br><span class="line"><span class="comment">//  3 [MutationRecord]</span></span><br></pre></td></tr></table></figure>
+<h2 id="容器出现滚动条时，子容器的宽度是否因为滚动条而改变"><a href="#容器出现滚动条时，子容器的宽度是否因为滚动条而改变" class="headerlink" title="容器出现滚动条时，子容器的宽度是否因为滚动条而改变"></a>容器出现滚动条时，子容器的宽度是否因为滚动条而改变</h2><blockquote>
+<p>TODO:增加测试数据表格</p>
+</blockquote>
+<p>仅当初次渲染时，子元素的高度超过父元素的高度（此时父元素的<code>overflow-y</code>值为<code>auto</code>），导致父元素出现滚动条，如果子元素的宽度是一个固定的大小，且在视图上与滚动条有重合，此时滚动条会覆盖在子元素的视图上，当再次触发渲染时，恢复正常（出现横向滚动条），此现象在水平和垂直方向上都存在</p>
+<h2 id="webpack-多线程和cache优化"><a href="#webpack-多线程和cache优化" class="headerlink" title="webpack 多线程和cache优化"></a>webpack 多线程和cache优化</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>第一次pack(ms)</th>
+<th>第二次pack(ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无优化</td>
+<td>54561</td>
+<td>53825</td>
+</tr>
+<tr>
+<td>cache-loader</td>
+<td>52237</td>
+<td>48472</td>
+</tr>
+<tr>
+<td>thread-loader</td>
+<td>52445</td>
+<td>52049</td>
+</tr>
+<tr>
+<td>cache-loader &amp; thread-loader</td>
+<td>55297</td>
+<td>52036</td>
+</tr>
+<tr>
+<td>hard-source-webpack-plugin（缺乏维护）</td>
+<td>54447</td>
+<td>42747</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><code>cache-loader</code>、<code>thread-loader</code>优化不明显，后期再看看</p>
+</blockquote>
+<h2 id="其他记录-以后分类"><a href="#其他记录-以后分类" class="headerlink" title="其他记录-以后分类"></a>其他记录-以后分类</h2><ul>
+<li>absolute定位将relative定位的父级的padding区域左上角视为原点</li>
+<li>在无relaitve父级的情况下，将window窗口的左上角视为原点</li>
+<li>DOM中ELEMENT元素在动画和过渡的过程中，通过<code>getClientRects</code>获取的ELEMENT元素位置信息是实时的，在变化的过程中会持续改变</li>
+<li>vue组件实例的\$vnode对象等同于相应插槽中的相应插槽位置的对象，比如：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exampleVueComponent.$vnode &#x3D;&#x3D;&#x3D; this.$slots.default[0] &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure></li>
+<li>vue实例的<code>$destroy</code>函数不会删除对应组件的节点，仅用于同步且按顺序触发<code>beforeDestroy</code>和<code>destroyed</code>这两个hook,，示例：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> comp1 = &#123;</span><br><span class="line">    mounted() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">window</span>.b = <span class="keyword">this</span>.$slots.default[<span class="number">0</span>])</span><br><span class="line">    &#125;,</span><br><span class="line">    render(h) &#123;</span><br><span class="line">        <span class="keyword">return</span> h(<span class="string">'div'</span>, &#123;&#125;, <span class="keyword">this</span>.$slots.default)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> comp2 = &#123;</span><br><span class="line">    beforeDestroy() &#123; <span class="built_in">console</span>.log(<span class="string">'beforeDestroy'</span>); <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">()</span> =&gt;</span> &#123; &#125;) &#125;,</span><br><span class="line">    destroyed() &#123; <span class="built_in">console</span>.log(<span class="string">'destroyed'</span>) &#125;,</span><br><span class="line">    render(h) &#123;</span><br><span class="line">        <span class="keyword">return</span> h(<span class="string">'h2'</span>, &#123;&#125;, [<span class="string">'has a h2'</span>])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    el: <span class="string">'#app'</span>,</span><br><span class="line">    render(h) &#123;</span><br><span class="line">        <span class="keyword">return</span> h(<span class="string">'comp1'</span>, &#123;&#125;, [h(<span class="string">'comp2'</span>, &#123; <span class="attr">ref</span>: <span class="string">'comp2'</span> &#125;)])</span><br><span class="line">    &#125;,</span><br><span class="line">    mounted() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">window</span>.a = <span class="keyword">this</span>.$refs.comp2)</span><br><span class="line">        <span class="keyword">this</span>.$refs.comp2.$destroy();</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'h2 remove'</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    components: &#123;</span><br><span class="line">        comp1,</span><br><span class="line">        comp2,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://hq229075284.github.io/blog/2021/06/notes/" data-id="ckqh1qkln000295x81e72bgv6" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/blog/2021/05/glob-match/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">glob_match</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2021/06/notes/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/blog/2021/06/notes/" class="title">notes</a></p>
+                            <p class="item-date"><time datetime="2021-06-28T20:00:50.305Z" itemprop="datePublished">2021-06-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2021/05/glob-match/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.postimg.cc/9XBBfbx8/oh-my-glob.gif)" alt="glob_match" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/blog/categories/shell/">shell</a></p>
+                            <p class="item-title"><a href="/blog/2021/05/glob-match/" class="title">glob_match</a></p>
+                            <p class="item-date"><time datetime="2021-05-13T12:50:08.000Z" itemprop="datePublished">2021-05-13</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2021/04/%E5%8E%9F%E7%A0%81%E3%80%81%E5%8F%8D%E7%A0%81%E3%80%81%E8%A1%A5%E7%A0%81/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.postimg.cc/43dbyMfM/encode.jpg)" alt="原码、反码、补码" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/blog/2021/04/%E5%8E%9F%E7%A0%81%E3%80%81%E5%8F%8D%E7%A0%81%E3%80%81%E8%A1%A5%E7%A0%81/" class="title">原码、反码、补码</a></p>
+                            <p class="item-date"><time datetime="2021-04-23T17:35:26.000Z" itemprop="datePublished">2021-04-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2020/11/es6-es11/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/blog/2020/11/es6-es11/" class="title">es6-es11</a></p>
+                            <p class="item-date"><time datetime="2020-11-11T13:28:10.000Z" itemprop="datePublished">2020-11-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2020/11/es6%E7%9B%B8%E5%85%B3/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/blog/2020/11/es6%E7%9B%B8%E5%85%B3/" class="title">es6相关</a></p>
+                            <p class="item-date"><time datetime="2020-11-10T10:14:44.000Z" itemprop="datePublished">2020-11-10</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/typescript/">typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web-api/">web-api</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web%E5%AE%89%E5%85%A8/">web安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/%E5%85%BC%E5%AE%B9%E6%80%A7/">兼容性</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/06/">六月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/11/">十一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/11/">十一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/docker/" rel="tag">docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/es/" rel="tag">es</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/es6/" rel="tag">es6</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/glob/" rel="tag">glob</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/web-api/" rel="tag">web-api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%85%BC%E5%AE%B9%E6%80%A7/" rel="tag">兼容性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算器原理</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/blog/tags/docker/" style="font-size: 20px;">docker</a> <a href="/blog/tags/es/" style="font-size: 10px;">es</a> <a href="/blog/tags/es6/" style="font-size: 10px;">es6</a> <a href="/blog/tags/glob/" style="font-size: 10px;">glob</a> <a href="/blog/tags/web-api/" style="font-size: 10px;">web-api</a> <a href="/blog/tags/%E5%85%BC%E5%AE%B9%E6%80%A7/" style="font-size: 10px;">兼容性</a> <a href="/blog/tags/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算器原理</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io" target="_blank" rel="noopener">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2021 HanQ<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice" target="_blank" rel="noopener">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        
+<script src="/blog/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/blog/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/blog/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>
