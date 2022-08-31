@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>es6-es11 | 睡不醒的黑客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="ECMAScript版本   编年版 简版 描述    ECMAScript2015 ECMAScript6 -   ECMAScript2016 ECMAScript7 -   ECMAScript2017 ECMAScript8 -   ECMAScript2018 ECMAScript9 -   ECMAScript2019 ECMAScript10 -   ECMAScript2020">
+<meta property="og:type" content="article">
+<meta property="og:title" content="es6-es11">
+<meta property="og:url" content="https://hq229075284.github.io/blog/2020/11/es6-es11/index.html">
+<meta property="og:site_name" content="睡不醒的黑客">
+<meta property="og:description" content="ECMAScript版本   编年版 简版 描述    ECMAScript2015 ECMAScript6 -   ECMAScript2016 ECMAScript7 -   ECMAScript2017 ECMAScript8 -   ECMAScript2018 ECMAScript9 -   ECMAScript2019 ECMAScript10 -   ECMAScript2020">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-11T13:28:10.000Z">
+<meta property="article:modified_time" content="2022-08-31T01:14:17.716Z">
+<meta property="article:author" content="HanQ">
+<meta property="article:tag" content="es">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/blog/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/blog/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/blog/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+
+    
+<script src="/blog/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?c5e2de02c4aac83227b728f6dc16f902";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/blog/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">睡不醒的黑客</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/blog/.">首页</a>
+                
+                    <a class="main-nav-link" href="/blog/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/blog/github">GitHub仓库</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/blog/images/IMG_0049.JPG" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/blog/',
+        CONTENT_URL: '/blog/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/blog/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/blog/.">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/blog/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/blog/github">GitHub仓库</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/blog/images/IMG_0049.JPG" />
+            <h2 id="name">HanQ</h2>
+            <h3 id="title">Web Developer &amp; Node Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>HangZhou, China</span>
+            <a id="follow" target="_blank" href="https://github.com/hq229075284">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                27
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                8
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/hq229075284" target="_blank" title="github" >
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main" ><article id="post-es6-es11" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            es6-es11
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/blog/2020/11/es6-es11/">
+            <time datetime="2020-11-11T13:28:10.000Z" itemprop="datePublished">2020-11-11</time>
+        </a>
+    </div>
+
+
+                        
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/blog/tags/es/" rel="tag">es</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <!-- markdownlint-disable MD025-->
+<h1 id="ECMAScript版本"><a href="#ECMAScript版本" class="headerlink" title="ECMAScript版本"></a>ECMAScript版本</h1><table>
+<thead>
+<tr>
+<th>编年版</th>
+<th>简版</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ECMAScript2015</td>
+<td>ECMAScript6</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="#ECMAScript2016">ECMAScript2016</a></td>
+<td><a href="#ECMAScript2016">ECMAScript7</a></td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="#ECMAScript2017">ECMAScript2017</a></td>
+<td><a href="#ECMAScript2017">ECMAScript8</a></td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="#ECMAScript2018">ECMAScript2018</a></td>
+<td><a href="#ECMAScript2018">ECMAScript9</a></td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="#ECMAScript2019">ECMAScript2019</a></td>
+<td><a href="#ECMAScript2019">ECMAScript10</a></td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="#ECMAScript2020">ECMAScript2020</a></td>
+<td><a href="#ECMAScript2020">ECMAScript11</a></td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="#ECMAScript2021">ECMAScript2021</a></td>
+<td><a href="#ECMAScript2021">ECMAScript12</a></td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h2 id="ECMAScript2016"><a href="#ECMAScript2016" class="headerlink" title="ECMAScript2016"></a>ECMAScript2016</h2><ul>
+<li>Array.prototype.includes</li>
+<li><code>**</code>替代<code>Math.pow</code>实现指数的计算</li>
+</ul>
+<h2 id="ECMAScript2017"><a href="#ECMAScript2017" class="headerlink" title="ECMAScript2017"></a>ECMAScript2017</h2><ul>
+<li>Object.values()</li>
+<li>Object.entries()</li>
+<li>String.prototype.padStart</li>
+<li>String.prototype.padEnd<br>(⚠️ padStart and padEnd on Emojis and other double-byte chars)</li>
+<li>Object.getOwnPropertyDescriptors(<a href="https://es6.ruanyifeng.com/#docs/object-methods#Object-getOwnPropertyDescriptors" target="_blank" rel="noopener">参考</a>)</li>
+<li>允许在函数入参的末尾添加<code>,</code>,比如<code>function a(a1,a2,){...}</code></li>
+<li>Async/Await</li>
+</ul>
+<h2 id="ECMAScript2018"><a href="#ECMAScript2018" class="headerlink" title="ECMAScript2018"></a>ECMAScript2018</h2><ul>
+<li><p>js引擎主进程和worker进程间可使用<code>SharedArrayBuffer</code>进行数据共享，并通过<code>Atomics</code>来管理共享内容数据</p>
+</li>
+<li><p>允许模板字符串和函数组合使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">staticStr,...dynamicParams</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(staticStr)<span class="comment">// ['static1 ',' static2 ','']</span></span><br><span class="line">    <span class="built_in">console</span>.log(dynamicParams)<span class="comment">// [1,2]</span></span><br><span class="line">&#125;</span><br><span class="line">fn<span class="string">`static1 <span class="subst">$&#123;<span class="number">1</span>&#125;</span> static2 <span class="subst">$&#123;<span class="number">2</span>&#125;</span>`</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>正则表达式中<code>.</code>可以在<code>s</code>模式下匹配所有字符（包括<code>\n</code>、<code>\r</code>、<code>\f</code>等）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Before</span></span><br><span class="line">/first.second/.test(<span class="string">'first\nsecond'</span>); <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//ECMAScript 2018</span></span><br><span class="line">/first.second/s.test(<span class="string">'first\nsecond'</span>); <span class="comment">//true</span></span><br><span class="line"><span class="comment">// Notice: /s</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>正则表达式中可以对匹配组合进行命名，格式为：<code>(?&lt;name&gt;...)</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">(<span class="regexp">/(?&lt;cname&gt;abc)/</span>.exec(<span class="string">'testabc'</span>))</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  输出:</span></span><br><span class="line"><span class="comment">  [</span></span><br><span class="line"><span class="comment">    'abc',</span></span><br><span class="line"><span class="comment">    'abc',</span></span><br><span class="line"><span class="comment">    groups:&#123; cname: 'abc' &#125;,</span></span><br><span class="line"><span class="comment">    index: 4,</span></span><br><span class="line"><span class="comment">    input: 'testabc'</span></span><br><span class="line"><span class="comment">  ]</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// \k使用之前组合名称匹配到的内容</span></span><br><span class="line"><span class="keyword">let</span> sameWords=<span class="regexp">/(?&lt;fruit&gt;apple|orange)===\k&lt;fruit&gt;/</span></span><br><span class="line">sameWords.test(<span class="string">'apple===apple'</span>) <span class="comment">// true</span></span><br><span class="line">sameWords.test(<span class="string">'apple===orange'</span>) <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在replace函数中使用组合命名</span></span><br><span class="line"><span class="keyword">let</span> replaceReg=<span class="regexp">/(?&lt;firstName&gt;[a-zA-z]+) (?&lt;secondName&gt;[a-zA-z]+)/</span></span><br><span class="line"><span class="string">'abc def'</span>.replace(replaceReg,<span class="string">'$&lt;secondName&gt; $&lt;firstName&gt;'</span>) <span class="comment">// 'def abc'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在解构中用<code>...varName</code>的方式提取对象中未被指定的属性，重组为一个新的对象，记为<code>varName</code></p>
+</li>
+<li><p>对象可使用<code>...</code>进行扩展</p>
+</li>
+<li><p>正则表达式可以使用<code>向前查找</code>,查找时消耗查询字符</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ['winning',groups:undefined,index:1,input:'#winning']</span></span><br><span class="line">(<span class="regexp">/(?&lt;=#).*/</span>.exec(<span class="string">'#winning'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">// 反向</span></span><br><span class="line"><span class="comment">// ['inning',groups:undefined,index:2,input:'#winning']</span></span><br><span class="line">(<span class="regexp">/(?&lt;!#)[a-z]+/</span>.exec(<span class="string">'#winning'</span>))</span><br><span class="line"><span class="comment">// ['',groups:undefined,index:0,input:'#winning']</span></span><br><span class="line">(<span class="regexp">/(?&lt;!#)[a-z]*/</span>.exec(<span class="string">'#winning'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">// PS: (?&lt;!...)会去匹配行首空字符，当匹配到第一个符合匹配规则的，就直接输出</span></span><br><span class="line"><span class="comment">// 比如：`/(?&lt;!#)[a-z]*/.exec('#winning')`中，(?&lt;!#)匹配的是行首空字符，[a-z]*匹配的是空字符，因为规则无法匹配首字符`#`</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在正则表达式中添加<code>Script</code>或<code>Script_Extensions</code>来扩展<code>Unicode</code>的匹配范围</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//The following matches a single Greek character</span></span><br><span class="line">/\p&#123;Script_Extensions=Greek&#125;/u.test(<span class="string">'π'</span>); <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line">/\p&#123;Script=Greek&#125;/u.test(<span class="string">'π'</span>); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 反向</span></span><br><span class="line">/\P&#123;Script=Greek&#125;/u.test(<span class="string">'π'</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Promise.prototype.finally()</p>
+</li>
+<li><p>for-of中使用await，在for循环中，上一个promise resolve后，才会执行下一个promise</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> promises=[...] <span class="comment">// Promise数组</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">await</span> (<span class="keyword">const</span> p <span class="keyword">of</span> promises)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(p)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">a()</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="ECMAScript2019"><a href="#ECMAScript2019" class="headerlink" title="ECMAScript2019"></a>ECMAScript2019</h2><ul>
+<li><p>String.prototype.trimStart()</p>
+</li>
+<li><p>String.prototype.trimEnd()</p>
+</li>
+<li><p>Object.fromEntries()</p>
+</li>
+<li><p>Array.prototype.flat()</p>
+</li>
+<li><p>Array.prototype.flatMap()</p>
+</li>
+<li><p>try-catch中<code>catch</code>的参数改为可选</p>
+</li>
+<li><p>Symbol.prototype.description输出<code>Symbol</code>类型变量的描述</p>
+</li>
+<li><p>Array.prototype.sort()，在原来的基础上使用稳定的排序算法，尤其在对象数组中，会根据给定的键之间比较进行排序，同键值的多个对象的顺序与这些对象在原数组中的顺序一致</p>
+</li>
+<li><p>Function.prototype.toString(),将返回函数的注释、空格和语法详细信息</p>
+</li>
+<li><p>JSON成为ECMAScript的完全子集，可解析之前解析不了的JSON字符串：行分隔符（<code>\u2028</code>）和段分隔符（<code>\u2029</code>）</p>
+</li>
+<li><p>JSON.stringify()输出进行了优化，原来显示未知的字符，现在在字符代码之前插入<code>\</code>字符后仍能保持可读性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// before</span></span><br><span class="line"><span class="built_in">JSON</span>.stringify(<span class="string">'\uD83D'</span>);<span class="comment">// '"�"'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// after</span></span><br><span class="line"><span class="built_in">JSON</span>.stringify(<span class="string">'\uD83D'</span>);<span class="comment">// '"\\ud83d"'</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ECMAScript2020"><a href="#ECMAScript2020" class="headerlink" title="ECMAScript2020"></a>ECMAScript2020</h2></li>
+<li><p>在变量名前加<code>#</code>，来定义类私有变量</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">a</span></span>&#123;</span><br><span class="line">  #p='private'</span><br><span class="line">  print()&#123;</span><br><span class="line">    console.log(this.#p)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> aa=<span class="keyword">new</span> a</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正常</span></span><br><span class="line">aa.print() <span class="comment">// 'private</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 异常</span></span><br><span class="line"><span class="comment">// Uncaught SyntaxError: Private field '#p' must be declared in an enclosing class</span></span><br><span class="line">console.log(aa.#p)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>?.</code>可选链运算符,符号左侧的值为<code>undefined</code>或<code>null</code>时，运算表达式返回<code>undefined</code>,否则继续执行后续的操作</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 形式：</span></span><br><span class="line">obj?.prop</span><br><span class="line">obj?.[expr]</span><br><span class="line">arr?.[index]</span><br><span class="line">func?.(args)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>??</code>空值合并运算符,运算符左侧为<code>undefined</code>或<code>null</code>时，取符号右侧的值，否则取左侧的值</p>
+</li>
+<li><p>动态引入，<code>import(&#39;some.js&#39;).then(...)</code></p>
+</li>
+<li><p>Promise.allSettled，处理多个Promise对象的集合，无论这些Promise对象的状态怎么变化，都会被记录下来，并在所有Promise状态发生变化后，执行then回调，入参为每个Promise状态的集合</p>
+</li>
+<li><p>globalThis</p>
+</li>
+<li><p>BigInt，通过在数字后面添加<code>n</code>来指定数的类型为BigInt,此类型用于处理大于(2^53 - 1)的整数，不可与普通number类型的数据进行操作，但可比较大小</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">11n</span>+<span class="number">11</span> <span class="comment">// Uncaught TypeError: Cannot mix BigInt and other types, use explicit conversions</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String.prototype.matchAll，返回的是一个可迭代对象，可以通过for-of访问每一个匹配组的结果（包含使用括号定义的捕获组信息）</p>
+</li>
+</ul>
+<h2 id="ECMAScript2021"><a href="#ECMAScript2021" class="headerlink" title="ECMAScript2021"></a>ECMAScript2021</h2><ul>
+<li><p>String.prototype.replaceAll</p>
+</li>
+<li><p>Promise.any</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.any(promises).then(</span><br><span class="line">  (first) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 任何一个 Promise 完成了</span></span><br><span class="line">  &#125;,</span><br><span class="line">  (error) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 所有的 Promise 都拒绝了</span></span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数字分隔符<code>_</code>,<code>let x=2_3333</code>等价于<code>let x=23333</code></p>
+</li>
+<li><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl" target="_blank" rel="noopener">Intl</a>.ListFormat，国际化格式化</p>
+</li>
+</ul>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://hq229075284.github.io/blog/2020/11/es6-es11/" data-id="cl7gxeugn000omkupf1jo82ex" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/blog/2021/04/%E5%8E%9F%E7%A0%81%E3%80%81%E5%8F%8D%E7%A0%81%E3%80%81%E8%A1%A5%E7%A0%81/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    原码、反码、补码
+                
+            </div>
+        </a>
+    
+    
+        <a href="/blog/2020/11/es6%E7%9B%B8%E5%85%B3/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">es6相关</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2022/08/notes/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/blog/2022/08/notes/" class="title">notes</a></p>
+                            <p class="item-date"><time datetime="2022-08-31T01:14:17.716Z" itemprop="datePublished">2022-08-31</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2022/04/css-grid/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2022/04/15/L8yHat.jpg)" alt="Grid" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/blog/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/blog/2022/04/css-grid/" class="title">Grid</a></p>
+                            <p class="item-date"><time datetime="2022-04-15T16:11:20.000Z" itemprop="datePublished">2022-04-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2022/04/css%E4%BC%98%E5%85%88%E7%BA%A7/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/blog/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/blog/2022/04/css%E4%BC%98%E5%85%88%E7%BA%A7/" class="title">css选择器和style属性的权值计算和比较</a></p>
+                            <p class="item-date"><time datetime="2022-04-15T16:11:10.000Z" itemprop="datePublished">2022-04-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2022/01/border-image-slice/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://www.wangzhanchengxu.com/uploadfile/2017/0325/20170325114208581.gif)" alt="border-image-slice" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/blog/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/blog/2022/01/border-image-slice/" class="title">border-image-slice</a></p>
+                            <p class="item-date"><time datetime="2022-01-13T16:55:16.000Z" itemprop="datePublished">2022-01-13</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2021/12/css%E4%B8%BB%E9%A2%98%E5%8C%96/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/blog/2021/12/css%E4%B8%BB%E9%A2%98%E5%8C%96/" class="title">css主题化</a></p>
+                            <p class="item-date"><time datetime="2021-12-01T16:10:24.000Z" itemprop="datePublished">2021-12-01</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/css/">css</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/typescript/">typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web-api/">web-api</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web%E5%AE%89%E5%85%A8/">web安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/%E5%85%BC%E5%AE%B9%E6%80%A7/">兼容性</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2022/08/">八月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/11/">十一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/11/">十一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/css/" rel="tag">css</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/docker/" rel="tag">docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/es/" rel="tag">es</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/es6/" rel="tag">es6</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/glob/" rel="tag">glob</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/web-api/" rel="tag">web-api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%85%BC%E5%AE%B9%E6%80%A7/" rel="tag">兼容性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算器原理</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/blog/tags/css/" style="font-size: 20px;">css</a> <a href="/blog/tags/docker/" style="font-size: 15px;">docker</a> <a href="/blog/tags/es/" style="font-size: 10px;">es</a> <a href="/blog/tags/es6/" style="font-size: 10px;">es6</a> <a href="/blog/tags/glob/" style="font-size: 10px;">glob</a> <a href="/blog/tags/web-api/" style="font-size: 10px;">web-api</a> <a href="/blog/tags/%E5%85%BC%E5%AE%B9%E6%80%A7/" style="font-size: 10px;">兼容性</a> <a href="/blog/tags/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算器原理</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io" target="_blank" rel="noopener">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2022 HanQ<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice" target="_blank" rel="noopener">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        
+<script src="/blog/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/blog/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/blog/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

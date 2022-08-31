@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>基于docker搭建gitlab-runner | 睡不醒的黑客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="基于docker搭建gitlab-runner 下载gitlab镜像 1docker pull gitlab&#x2F;gitlab-runner  注册runner 1234567891011121314151617181920212223242526272829# ps:在注册过程中直接以人机交互的方式一步一步进行注册的话，可能会出现ssl验证不通过的问题，所以在这种情况下直接用命令行参数进行注册# -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于docker搭建gitlab-runner">
+<meta property="og:url" content="https://hq229075284.github.io/blog/2020/05/%E5%9F%BA%E4%BA%8Edocker%E6%90%AD%E5%BB%BAgitlab-runner/index.html">
+<meta property="og:site_name" content="睡不醒的黑客">
+<meta property="og:description" content="基于docker搭建gitlab-runner 下载gitlab镜像 1docker pull gitlab&#x2F;gitlab-runner  注册runner 1234567891011121314151617181920212223242526272829# ps:在注册过程中直接以人机交互的方式一步一步进行注册的话，可能会出现ssl验证不通过的问题，所以在这种情况下直接用命令行参数进行注册# -">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://img0.imgtn.bdimg.com/it/u=1699744843,363136547&fm=26&gp=0.jpg">
+<meta property="article:published_time" content="2020-05-31T14:13:25.000Z">
+<meta property="article:modified_time" content="2022-08-31T01:14:17.716Z">
+<meta property="article:author" content="HanQ">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://img0.imgtn.bdimg.com/it/u=1699744843,363136547&fm=26&gp=0.jpg">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/blog/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/blog/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/blog/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+
+    
+<script src="/blog/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?c5e2de02c4aac83227b728f6dc16f902";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/blog/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">睡不醒的黑客</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/blog/.">首页</a>
+                
+                    <a class="main-nav-link" href="/blog/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/blog/github">GitHub仓库</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/blog/images/IMG_0049.JPG" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/blog/',
+        CONTENT_URL: '/blog/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/blog/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/blog/.">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/blog/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/blog/github">GitHub仓库</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/blog/images/IMG_0049.JPG" />
+            <h2 id="name">HanQ</h2>
+            <h3 id="title">Web Developer &amp; Node Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>HangZhou, China</span>
+            <a id="follow" target="_blank" href="https://github.com/hq229075284">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                27
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                8
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/hq229075284" target="_blank" title="github" >
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main" ><article id="post-基于docker搭建gitlab-runner" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="http://img0.imgtn.bdimg.com/it/u=1699744843,363136547&fm=26&gp=0.jpg" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            基于docker搭建gitlab-runner
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/blog/2020/05/%E5%9F%BA%E4%BA%8Edocker%E6%90%AD%E5%BB%BAgitlab-runner/">
+            <time datetime="2020-05-31T14:13:25.000Z" itemprop="datePublished">2020-05-31</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/blog/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/blog/tags/docker/" rel="tag">docker</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h1 id="基于docker搭建gitlab-runner"><a href="#基于docker搭建gitlab-runner" class="headerlink" title="基于docker搭建gitlab-runner"></a>基于docker搭建gitlab-runner</h1><ol>
+<li><p>下载gitlab镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitlab/gitlab-runner</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注册runner</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ps:在注册过程中直接以人机交互的方式一步一步进行注册的话，可能会出现ssl验证不通过的问题，所以在这种情况下直接用命令行参数进行注册</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --rm 临时创建一个容器，用来运行gitlab/gitlab-runner镜像</span></span><br><span class="line">sudo docker run --rm \</span><br><span class="line"><span class="comment"># 挂载宿主的文件目录到容器内,用以存储注册之后生成的config.toml文件</span></span><br><span class="line"><span class="comment"># 当以root用户运行gitlab-runner时，/etc/gitlab-runner为默认存储配置文件的地方</span></span><br><span class="line">-v /home/dcxx/gitlab-runner:/etc/gitlab-runner \</span><br><span class="line"><span class="comment"># 指定镜像</span></span><br><span class="line">gitlab/gitlab-runner \</span><br><span class="line"><span class="comment"># 执行gitlab-runner register命令</span></span><br><span class="line">register \</span><br><span class="line"><span class="comment"># 不需要交互式</span></span><br><span class="line">--non-interactive \</span><br><span class="line"><span class="comment"># gitlab web服务的https的证书</span></span><br><span class="line">--tls-ca-file <span class="string">'/etc/gitlab-runner/git.dcyun.com.crt'</span> \</span><br><span class="line"><span class="comment"># gitlab web服务地址</span></span><br><span class="line">--url <span class="string">"https://git.dcyun.com/"</span> \</span><br><span class="line"><span class="comment"># gitlab网站上添加runner时提供的token</span></span><br><span class="line">--registration-token <span class="string">"T3V4vNvQrAMZDyNVFrg7"</span> \</span><br><span class="line"><span class="comment"># 指定在什么环节跑构建脚本</span></span><br><span class="line">--executor <span class="string">"docker"</span> \</span><br><span class="line"><span class="comment"># 指定跑构建脚本时的docker环境，即镜像</span></span><br><span class="line">--docker-image ubuntu:latest \</span><br><span class="line"><span class="comment"># runner的名称，主要显示在job详情中pipeline选择runner时的下拉项中</span></span><br><span class="line">--name <span class="string">'前端自动部署'</span> \</span><br><span class="line"><span class="comment"># 运行没有配置tag的任务执行</span></span><br><span class="line">--run-untagged=<span class="string">"true"</span> \</span><br><span class="line"><span class="comment"># runner的tag</span></span><br><span class="line">--tag-list <span class="string">'docker,font-end,common'</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<a id="more"></a>
+<ol>
+<li><p>gitlab-runner注册完之后会产生config.toml文件</p>
+</li>
+<li><pre><code class="bash"># 用gitlab/gitlab-runner镜像，跑起一个gitlab-runner的容器
+# 启动之后，之前注册的runner就会处于在线且启用状态
+docker run -it --name gitlab-runner --restart always \
+-v /home/dcxx/gitlab-runner:/etc/gitlab-runner \
+-v /var/run/docker.sock:/var/run/docker.sock \
+gitlab/gitlab-runner
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. gitlab-runner拉取代码时，会存在ssl验证不通过的问题，需要在config.toml中添加配置：</span><br><span class="line"></span><br><span class="line">   &#96;&#96;&#96;toml</span><br><span class="line">   # &quot;&quot;&quot;用于包裹多行</span><br><span class="line">   pre_clone_script &#x3D; &quot;&quot;&quot;</span><br><span class="line">   	# 关闭git的ssl验证</span><br><span class="line">     git config --global http.sslverify false</span><br><span class="line">   &quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>从宿主机上挂载node环境和软件源配置文件到容器中，方便容器中的脚步执行和软件源配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[runners.docker]</span></span><br><span class="line">  volumes = ["/cache","/home/dcxx/gitlab-runner/node:/node","/etc/apt/sources.http.list:/sources.list"]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在项目中创建.gitlab-ci.yml</p>
+</li>
+<li><pre><code class="yml">before_script:
+    # 添加node到环境中
+  - PATH=/node/bin:$PATH
+  # 由于Ubuntu官方的软件源部分被墙
+  # 需要更改Ubuntu的软件源
+  - cat /sources.list
+  - cp -f /sources.list /etc/apt/sources.list
+  # 安装ssh相关的依赖，用于scp发布
+  - &#39;which ssh-agent || ( apt update -y &amp;&amp; apt install openssh-client -y )&#39;
+  # 创建.ssh文件夹用于存储id_rsa私钥
+  - mkdir -p ~/.ssh
+  # 读取gitlab设置下Variables中配置的SSH_PRIVATE_KEY变量，将其写入id_rsa中
+  - echo &quot;$SSH_PRIVATE_KEY&quot; &gt; ~/.ssh/id_rsa
+  # 设置仅当前用户可用（ssh硬性要求）
+  - chmod -R 700 ~/.ssh
+  - eval $(ssh-agent -s)
+  # 用于解决
+  - ssh-agent bash
+  # 添加密钥
+  - ssh-add ~/.ssh/id_rsa
+  # 当ssh第一次连接远程服务器的时候，会先询问是否连接这台主机，因为是在ci中跑，无法进行人机交互，所以设置成不检查host key，否则会报`host key verification failed`的错误
+  - echo -e &quot;Host *\\n\\tStrictHostKeyChecking no\\n&quot; &gt; ~/.ssh/config
+
+dev:
+  script:
+    # 跑构建代码的脚本
+    - npm run serve
+  after_script:
+    # 将构建后的代码发布到项目服务器
+    - scp -r ./dist dcxx@192.168.2.130:~/web/dist
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&gt; OpenSSH将访问过计算机的公钥(public key)都记录在~&#x2F;.ssh&#x2F;known_hosts中。当下次访问相同计算机时，OpenSSH会核对公钥。如果公钥不同，OpenSSH会发出警告，避免你受到DNS Hijack之类的攻击。</span><br><span class="line">&gt;</span><br><span class="line">&gt; SSH对主机的public_key的检查等级是根据StrictHostKeyChecking变量来配置的。默认情况下，StrictHostKeyChecking&#x3D;ask。简单所下它的三种配置值：</span><br><span class="line">&gt;</span><br><span class="line">&gt; 1. StrictHostKeyChecking&#x3D;no  </span><br><span class="line">&gt;</span><br><span class="line">&gt;    最不安全的级别，当然也没有那么多烦人的提示了，相对安全的内网时建议使用。如果连接server的key在本地不存在，那么就自动添加到文件中（默认是known_hosts），并且给出一个警告。</span><br><span class="line">&gt;</span><br><span class="line">&gt;  2. StrictHostKeyChecking&#x3D;ask </span><br><span class="line">&gt;</span><br><span class="line">&gt;     默认的级别，就是出现刚才的提示了。如果连接和key不匹配，给出提示，并拒绝登录。</span><br><span class="line">&gt;</span><br><span class="line">&gt; 3. StrictHostKeyChecking&#x3D;yes  </span><br><span class="line">&gt;</span><br><span class="line">&gt;    最安全的级别，如果连接与key不匹配，就拒绝连接，不会提示详细信息。</span><br><span class="line">8. 之后提交代码就可以看到runner的效果了</span><br><span class="line"></span><br><span class="line">   &gt; 在gitlab-runner执行过程中，config.toml的pre_clone_script和.gitlab-ci.yml的before_script、script、after_script是在相互隔离的环境下运行的（大概猜测是在不同的docker容器下）</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;toml</span><br><span class="line"># config.toml大致的结构</span><br><span class="line">concurrent &#x3D; 2</span><br><span class="line">check_interval &#x3D; 0</span><br><span class="line"></span><br><span class="line">[session_server]</span><br><span class="line">  session_timeout &#x3D; 1800</span><br><span class="line"></span><br><span class="line">[[runners]]</span><br><span class="line">  name &#x3D; &quot;test&quot;</span><br><span class="line">  url &#x3D; &quot;https:&#x2F;&#x2F;git.dcyun.com&#x2F;&quot;</span><br><span class="line">  token &#x3D; &quot;q7pn15zhaZyJQzuHxyCC&quot;</span><br><span class="line">  tls-ca-file &#x3D; &quot;&#x2F;etc&#x2F;gitlab-runner&#x2F;certs&#x2F;git.dcyun.com.crt&quot;</span><br><span class="line">  pre_clone_script &#x3D; &quot;&quot;&quot;</span><br><span class="line">    git config --global http.sslverify false</span><br><span class="line">  &quot;&quot;&quot;</span><br><span class="line">  executor &#x3D; &quot;docker&quot;</span><br><span class="line">  [runners.custom_build_dir]</span><br><span class="line">  [runners.cache]</span><br><span class="line">    [runners.cache.s3]</span><br><span class="line">    [runners.cache.gcs]</span><br><span class="line">  [runners.docker]</span><br><span class="line">    tls_verify &#x3D; false</span><br><span class="line">    image &#x3D; &quot;ubuntu&quot;</span><br><span class="line">    privileged &#x3D; false</span><br><span class="line">    disable_entrypoint_overwrite &#x3D; false</span><br><span class="line">    oom_kill_disable &#x3D; false</span><br><span class="line">    disable_cache &#x3D; false</span><br><span class="line">    volumes &#x3D; [&quot;&#x2F;cache&quot;,&quot;&#x2F;home&#x2F;dcxx&#x2F;gitlab-runner&#x2F;node:&#x2F;node&quot;,&quot;&#x2F;etc&#x2F;apt&#x2F;sources.http.list:&#x2F;sources.list&quot;]</span><br><span class="line">    shm_size &#x3D; 0</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ol>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://hq229075284.github.io/blog/2020/05/%E5%9F%BA%E4%BA%8Edocker%E6%90%AD%E5%BB%BAgitlab-runner/" data-id="cl7gxeugj000jmkupbzrf4he1" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/blog/2020/05/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%85%BC%E5%AE%B9%E6%80%A7%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    移动端兼容性问题记录
+                
+            </div>
+        </a>
+    
+    
+        <a href="/blog/2020/05/docker%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">docker环境配置</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2022/08/notes/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/blog/2022/08/notes/" class="title">notes</a></p>
+                            <p class="item-date"><time datetime="2022-08-31T01:14:17.716Z" itemprop="datePublished">2022-08-31</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2022/04/css-grid/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2022/04/15/L8yHat.jpg)" alt="Grid" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/blog/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/blog/2022/04/css-grid/" class="title">Grid</a></p>
+                            <p class="item-date"><time datetime="2022-04-15T16:11:20.000Z" itemprop="datePublished">2022-04-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2022/04/css%E4%BC%98%E5%85%88%E7%BA%A7/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/blog/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/blog/2022/04/css%E4%BC%98%E5%85%88%E7%BA%A7/" class="title">css选择器和style属性的权值计算和比较</a></p>
+                            <p class="item-date"><time datetime="2022-04-15T16:11:10.000Z" itemprop="datePublished">2022-04-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2022/01/border-image-slice/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://www.wangzhanchengxu.com/uploadfile/2017/0325/20170325114208581.gif)" alt="border-image-slice" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/blog/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/blog/2022/01/border-image-slice/" class="title">border-image-slice</a></p>
+                            <p class="item-date"><time datetime="2022-01-13T16:55:16.000Z" itemprop="datePublished">2022-01-13</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/blog/2021/12/css%E4%B8%BB%E9%A2%98%E5%8C%96/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/blog/2021/12/css%E4%B8%BB%E9%A2%98%E5%8C%96/" class="title">css主题化</a></p>
+                            <p class="item-date"><time datetime="2021-12-01T16:10:24.000Z" itemprop="datePublished">2021-12-01</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/css/">css</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/typescript/">typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web-api/">web-api</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web%E5%AE%89%E5%85%A8/">web安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/%E5%85%BC%E5%AE%B9%E6%80%A7/">兼容性</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2022/08/">八月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/11/">十一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/11/">十一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">五月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/css/" rel="tag">css</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/docker/" rel="tag">docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/es/" rel="tag">es</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/es6/" rel="tag">es6</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/glob/" rel="tag">glob</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/web-api/" rel="tag">web-api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%85%BC%E5%AE%B9%E6%80%A7/" rel="tag">兼容性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算器原理</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/blog/tags/css/" style="font-size: 20px;">css</a> <a href="/blog/tags/docker/" style="font-size: 15px;">docker</a> <a href="/blog/tags/es/" style="font-size: 10px;">es</a> <a href="/blog/tags/es6/" style="font-size: 10px;">es6</a> <a href="/blog/tags/glob/" style="font-size: 10px;">glob</a> <a href="/blog/tags/web-api/" style="font-size: 10px;">web-api</a> <a href="/blog/tags/%E5%85%BC%E5%AE%B9%E6%80%A7/" style="font-size: 10px;">兼容性</a> <a href="/blog/tags/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算器原理</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io" target="_blank" rel="noopener">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2022 HanQ<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice" target="_blank" rel="noopener">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        
+<script src="/blog/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/blog/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/blog/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/blog/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>
